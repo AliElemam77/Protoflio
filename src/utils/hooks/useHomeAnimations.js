@@ -1,4 +1,4 @@
- // hooks/useHomeAnimations.js
+// hooks/useHomeAnimations.js
 import { useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -17,71 +17,139 @@ const useHomeAnimations = () => {
       smoothTouch: 0.1,
     });
 
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: "#smooth-content",
-        start: "top top",
-        end: "bottom bottom",
-        scrub: true,
-      },
+    const mm = gsap.matchMedia();
+
+    // ======================== Desktop ======================== //
+    mm.add("(min-width: 768px)", () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#smooth-content",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1.5,
+        },
+      });
+
+      tl.fromTo(
+        ".decoreation-section",
+        {
+          y: 150,
+          rotate: 12,
+        },
+        {
+          y: 150,
+          rotate: 12,
+
+          duration: 2,
+          ease: "power2.out",
+        },
+      )
+
+        // دخول الكروت
+        .fromTo(
+          ".decoreation-hero-card",
+          {
+            backgroundColor: "red",
+            x: -80,
+            skewX: -20,
+          },
+          {
+            backgroundColor: "yellow",
+            x: -80,
+            skewX: 0,
+            duration: 2.5,
+            stagger: 0.08,
+            ease: "expo.out",
+          },
+          "-=1.5",
+        )
+
+        // حركة يمين خفيفة
+        .to(".decoreation-hero-card", {
+          x: 250,
+          duration: 2,
+          stagger: 0.05,
+          ease: "power1.inOut",
+        })
+
+        // رجوع بسيط
+        .to(".decoreation-hero-card", {
+          x: -120,
+          scale: 0.7,
+          backgroundColor: "blue",
+          duration: 2,
+          stagger: 0.05,
+          ease: "power1.inOut",
+        })
+
+        // خروج نهائي
+        .to(".decoreation-hero-card", {
+          backgroundColor: "green",
+                    scale: 1,
+          x: -1200,
+          y: -250,
+          rotate: -10,
+          duration: 3,
+          stagger: 0.08,
+          ease: "power3.in",
+        });
+
+      gsap.from(".decoreation-hero-card", {
+        opacity: 0,
+        y: 40,
+        duration: 1.2,
+        stagger: 0.1,
+        ease: "power3.out",
+      });
     });
 
-    // ======================== decoration section animation ================= //
-    tl.fromTo(
-      ".decoreation-section",
-      {
-        y: 300,
-        rotate: 20,
-        ease: "none",
-      },
-      {
-        y: 0,
-        rotate: 20,
-        ease: "none",
-      },
-    )
-      .fromTo(
-        ".decoreation-hero-card",
+    // ======================== Mobile ======================== //
+    mm.add("(max-width: 767px)", () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: "#smooth-content",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: true,
+        },
+      });
+
+      tl.fromTo(
+        ".decoreation-section",
         {
+          y: 100,
           skewX: 70,
         },
         {
-          x: -100,
-          stagger: 0.1,
-          ease: "none",
+          y: 0,
+          skewX: -70,
+          duration: 1,
+          ease: "power2.out",
         },
       )
-      .to(".decoreation-section", {
-        x: 400,
-        ease: "none",
-      })
-      .to(".decoreation-hero-card", {
-        background: "linear-gradient(90deg, #0f212e, #0f212e)",
-        x: 150,
-        stagger: 0.05,
-        ease: "none",
-      })
-      .to("#smooth-wrapper", {
-        backgroundColor: "white",
-      })
-      .to(".decoreation-section", {
-        x: 200,
-        ease: "none",
-      })
-      .to(".decoreation-hero-card", {
-        skewX: -70,
-        stagger: 0.05,
-        ease: "none",
-      });
-
-    // ======================== decoration card animation ================= //
-    gsap.from(".decoreation-hero-card", {
-      opacity: 0,
-      duration: 1,
-      stagger: 0.2,
-      ease: "power4.out",
+        .fromTo(
+          ".decoreation-hero-card",
+          {
+            y: 150,
+            scale: 0.8,
+          },
+          {
+            y: -200,
+            scale: 1,
+            duration: 1,
+            stagger: 0.1,
+            ease: "power2.out",
+          },
+        )
+        .to(".decoreation-hero-card", {
+          y: -100,
+          duration: 1.5,
+          stagger: 0.1,
+          ease: "power1.inOut",
+        });
     });
 
+    // ======================== Background Animation ======================== //
     gsap.fromTo(
       "#smooth-wrapper",
       {
@@ -89,11 +157,12 @@ const useHomeAnimations = () => {
       },
       {
         backgroundColor: "#010203",
-        duration: 0.3,
+        duration: 2,
       },
     );
 
     return () => {
+      mm.revert();
       smoother.kill();
       ScrollTrigger.getAll().forEach((t) => t.kill());
     };

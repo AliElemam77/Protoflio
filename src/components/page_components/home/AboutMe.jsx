@@ -105,7 +105,7 @@ const AboutMe = () => {
 
         <h2 className="about-text text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.15] font-black text-white max-w-5xl">
           Hi, I’m{" "}
-          <span className="text-cyan-400 name-animation">Ali Elemam</span>{" "}
+          <span className="text-yellow-400 ">Ali Elemam</span>{" "}
           — crafting modern, scalable, and high-performance web experiences.
         </h2>
 
@@ -122,7 +122,7 @@ const AboutMe = () => {
             className={`${item.className}   border-2 border-white/30 backdrop-blur-xl min-h-[50vh] px-4 md:px-6 lg:px-8 rounded-[40px] flex flex-col justify-center overflow-hidden`}
           >
             <span className="text-white/70 uppercase tracking-[0.3em] text-sm mb-4">
-              Experience 0{item.id}
+               0{item.id}
             </span>
 
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6">
