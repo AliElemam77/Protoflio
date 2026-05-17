@@ -49,12 +49,12 @@ const useHomeAnimations = () => {
         .fromTo(
           ".decoreation-hero-card",
           {
-            backgroundColor: "red",
+            backgroundColor: "#CE2626",
             x: -80,
             skewX: -20,
           },
           {
-            backgroundColor: "yellow",
+            backgroundColor: "#73A5CA",
             x: -80,
             skewX: 0,
             duration: 2.5,
@@ -76,7 +76,7 @@ const useHomeAnimations = () => {
         .to(".decoreation-hero-card", {
           x: -120,
           scale: 0.7,
-          backgroundColor: "blue",
+          backgroundColor: "#F0D8A1",
           duration: 2,
           stagger: 0.05,
           ease: "power1.inOut",
@@ -84,7 +84,7 @@ const useHomeAnimations = () => {
 
         // خروج نهائي
         .to(".decoreation-hero-card", {
-          backgroundColor: "green",
+          backgroundColor: "#DCF0C3",
                     scale: 1,
           x: -1200,
           y: -250,
