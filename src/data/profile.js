@@ -136,11 +136,11 @@ export const profile = {
     { label: "Tailwind CSS", pct: 92 },
     { label: "Redux Toolkit", pct: 90 },
     { label: "Salla Themes", pct: 90 },
-    { label: "React Query", pct: 88 },
+    { label: "React Query", pct: 90 },
     { label: "Node.js", pct: 75 },
-    { label: "Express.js", pct: 72 },
-    { label: "Flutter", pct: 70 },
-    { label: "React Native", pct: 68 },
+    { label: "Express.js", pct: 50 },
+    { label: "Flutter", pct: 50 },
+    { label: "React Native", pct: 5 },
   ],
 
   // Contact
