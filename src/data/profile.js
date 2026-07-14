@@ -1,113 +1,173 @@
-// ============================================================
-//  EDIT ME — all portfolio content lives here.
-//  Lines marked  // TODO  are placeholders: swap in real data.
-// ============================================================
-
 export const profile = {
-  // Title bar + footer identity
+  // Terminal Identity
   user: "ali",
   host: "ELEMAM-01",
   name: "ALI ELEMAM",
-  role: "Frontend engineer & indie hacker, building web experiences",
+  role: "Software Engineer specializing in Frontend, with knowledge of Mobile & Backend development",
 
-  // Hero meta checks ( [x] ... ) — set amber:true for the highlighted one
+  // Hero
   meta: [
-    { text: "TODO: City, Country (UTC+?)", amber: false }, // TODO: your location
-    { text: "Frontend & cross-platform", amber: false },
+    { text: "Mansoura, Egypt (UTC+2)", amber: false },
+    { text: "Frontend • Basic Mobile • Basic Backend", amber: false },
     { text: "Open to opportunities", amber: true },
   ],
 
-  // neofetch identity list (green keys / sage values)
+  // Neofetch
   neofetch: [
-    { k: "OS", v: "Human v1.0 (frontend build)" },
-    { k: "Host", v: "TODO-location" }, // TODO: your location
-    { k: "Role", v: "Frontend + E-commerce" },
-    { k: "Uptime", v: "TODO yrs, 4 roles" }, // TODO: years of experience
-    { k: "Shell", v: "vscode, git, figma" },
-    { k: "Stack", v: "React, Next, TS, Tailwind" },
-    { k: "Focus", v: "storefronts & performance" },
+    { k: "OS", v: "Human v2.0 (Software Engineer Build)" },
+    { k: "Host", v: "Mansoura, Egypt" },
+    { k: "Role", v: "Software Engineer" },
+    { k: "Experience", v: "Frontend & E-commerce" },
+    { k: "Shell", v: "VS Code, Git, Claude Code" },
+    { k: "Stack", v: "React, Next.js, TypeScript, Node.js, Flutter" },
+    { k: "Focus", v: "Scalable Web Applications" },
   ],
-  status: "AVAILABLE", // amber-glow status value
 
-  // neofetch terminal color-swatch strip
-  swatches: ["#000000", "#1c7a3c", "#2bbf5c", "#39ff7a", "#5cf6ff", "#ffd24a", "#5f8d68", "#eafff1"],
+  status: "AVAILABLE",
 
-  // ls -la ~/projects  — TODO: replace all four with your real projects
+  swatches: [
+    "#000000",
+    "#1c7a3c",
+    "#2bbf5c",
+    "#39ff7a",
+    "#5cf6ff",
+    "#ffd24a",
+    "#5f8d68",
+    "#eafff1",
+  ],
+
+  // Projects
   projects: [
     {
-      name: "project-one/",
-      stars: "★ TODO",
+      name: "i-crm/",
+      stars: "★ Production",
       perm: "-rwxr-xr-x",
-      desc: "TODO: one-line description of what you built.",
-      highlight: "what you built",
-      tags: ["React", "Next.js"],
-      tagAccent: "open-source",
-      demo: "#",
-      source: "#",
-    },
-    {
-      name: "project-two/",
-      stars: "★ TODO",
-      perm: "-rwxr-xr-x",
-      desc: "TODO: one-line description with a highlighted term.",
-      highlight: "highlighted term",
-      tags: ["TypeScript", "Tailwind"],
+      desc: "CRM SaaS platform integrated with WhatsApp API featuring authentication, role management, and real-time communication.",
+      highlight: "WhatsApp API",
+      tags: ["React", "TypeScript", "Socket.IO"],
       tagAccent: "SaaS",
       demo: "#",
       source: "#",
     },
     {
-      name: "project-three/",
-      stars: "★ TODO",
-      perm: "-rw-r--r--",
-      desc: "TODO: a Salla / Zid storefront or theme project.",
-      highlight: "storefront",
-      tags: ["Salla", "Zid"],
-      tagAccent: "open-source",
+      name: "salesfiy/",
+      stars: "★ Production",
+      perm: "-rwxr-xr-x",
+      desc: "Sales quotation platform with pricing engine and professional PDF generation.",
+      highlight: "PDF generation",
+      tags: ["React", "TypeScript", "Tailwind"],
+      tagAccent: "SaaS",
       demo: "#",
       source: "#",
     },
     {
-      name: "project-four/",
-      stars: "★ TODO",
+      name: "whatsapp-monitor/",
+      stars: "★ Production",
       perm: "-rwxr-xr-x",
-      desc: "TODO: a component library or animation-heavy project.",
-      highlight: "animation",
-      tags: ["GSAP", "React"],
+      desc: "Real-time monitoring system built on WhatsApp Web JS for tracking sales communication.",
+      highlight: "real-time",
+      tags: ["React", "Socket.IO", "React Query"],
       tagAccent: "SaaS",
+      demo: "#",
+      source: "#",
+    },
+    {
+      name: "almounafies/",
+      stars: "★ Live",
+      perm: "-rwxr-xr-x",
+      desc: "Travel and booking platform with multilingual support, SEO optimization, and admin dashboard.",
+      highlight: "SEO optimization",
+      tags: ["Next.js", "TypeScript", "Tailwind"],
+      tagAccent: "Production",
+      demo: "#",
+      source: "#",
+    },
+    {
+      name: "sarie-theme/",
+      stars: "★ Private",
+      perm: "-rwxr-xr-x",
+      desc: "Fast premium Salla theme built for modern storefronts.",
+      highlight: "Fast",
+      tags: ["Salla", "Twig", "Tailwind"],
+      tagAccent: "Theme",
+      demo: "#",
+      source: "#",
+    },
+    {
+      name: "tabby-theme/",
+      stars: "★ Private",
+      perm: "-rwxr-xr-x",
+      desc: "Modern Salla theme focused on performance and conversion.",
+      highlight: "performance",
+      tags: ["Salla", "Twig", "Tailwind"],
+      tagAccent: "Theme",
+      demo: "https://salla.com/themes/1412444137",
+      source: "#",
+    },
+    {
+      name: "elbaraka-theme/",
+      stars: "★ Private",
+      perm: "-rwxr-xr-x",
+      desc: "Custom Salla theme with premium shopping experience.",
+      highlight: "premium",
+      tags: ["Salla", "Twig", "Tailwind"],
+      tagAccent: "Theme",
+      demo: "#",
+      source: "#",
+    },
+    {
+      name: "silina-theme/",
+      stars: "★ Private",
+      perm: "-rwxr-xr-x",
+      desc: "Fashion-focused Salla theme with elegant UI and responsive layouts.",
+      highlight: "responsive",
+      tags: ["Salla", "Twig", "Tailwind"],
+      tagAccent: "Theme",
       demo: "#",
       source: "#",
     },
   ],
 
-  // cat stack.txt | sort -r  — honest, varied self-assessment
+  // Skills
   skills: [
-    { label: "React/Next", pct: 95 },
-    { label: "JavaScript", pct: 93 },
+    { label: "React", pct: 95 },
+    { label: "Next.js", pct: 94 },
+    { label: "TypeScript", pct: 92 },
     { label: "Tailwind CSS", pct: 92 },
-    { label: "TypeScript", pct: 90 },
-    { label: "Salla/Zid", pct: 88 },
-    { label: "GSAP/Motion", pct: 85 },
-    { label: "State/Redux", pct: 82 },
-    { label: "Design/UI", pct: 80 },
+    { label: "Redux Toolkit", pct: 90 },
+    { label: "Salla Themes", pct: 90 },
+    { label: "React Query", pct: 88 },
+    { label: "Node.js", pct: 75 },
+    { label: "Express.js", pct: 72 },
+    { label: "Flutter", pct: 70 },
+    { label: "React Native", pct: 68 },
   ],
 
-  // ./contact --hire
+  // Contact
   contact: {
-    email: "hello@alielemam.dev", // TODO: your real email
-    headline: "handshake",
-    blurb: "Ready to build something fast, robust, and memorable. Drop a line if you have a challenge for me.",
+    email: "alielemam515@gmail.com",
+    headline: "Let's build together",
+    blurb:
+      "Software Engineer passionate about building scalable SaaS products, modern web applications, and high-performance e-commerce experiences.",
     links: [
-      { label: "github", href: "#" }, // TODO
-      { label: "x.com", href: "#" }, // TODO
-      { label: "blog", href: "#" }, // TODO
-      { label: "CV.pdf", href: "#" }, // TODO
+      {
+        label: "github",
+        href: "https://github.com/AliElemam77",
+      },
+      {
+        label: "linkedin",
+        href: "https://www.linkedin.com/in/ali-elemamm/",
+      },
+      {
+        label: "CV.pdf",
+        href: "/Ali-Elemam-CV.pdf",
+      },
     ],
   },
 
-  // shell-echo footer
+  // Footer
   footer: {
-    echo: "ali@ELEMAM-01: (c) 2026 — shell v1.0",
-    git: "LAST_COMMIT: TODO [main@a1f9e2c] | UPTIME: 99.98%", // TODO
+    echo: "ali@ELEMAM-01:~$",
+    git: "LAST_COMMIT: feat: building scalable SaaS & e-commerce solutions 🚀",
   },
 };
