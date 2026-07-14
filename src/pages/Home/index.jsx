@@ -1,31 +1,50 @@
-// Home.jsx
+// Home.jsx — the shell session, rendered top-to-bottom inside the terminal window.
 
-import AboutMe from "../../components/page_components/home/AboutMe";
+import BootLog from "../../components/page_components/home/BootLog";
 import HeroSection from "../../components/page_components/home/HeroSection";
-import ExperienceSection from "../../components/page_components/home/ExperienceSection";
+import IdentityCard from "../../components/page_components/home/IdentityCard";
+import WorkGrid from "../../components/page_components/home/WorkGrid";
+import SkillMeters from "../../components/page_components/home/SkillMeters";
+import ContactSection from "../../components/page_components/home/ContactSection";
 
-
+const Divider = ({ children, className = "" }) => (
+  <div
+    className={`select-none overflow-hidden whitespace-nowrap py-4 font-mono text-[#143614] opacity-50 ${className}`}
+  >
+    {children}
+  </div>
+);
 
 const Home = () => {
-
   return (
-    <div
-      className="relative min-h-screen"
-    >
-   
+    <>
+      <BootLog />
+      <HeroSection />
 
-      {/* content */}
-      <div id="smooth-content">
-        <section className="flex flex-col relative text-amber-50 ">
-          <HeroSection />
-          <AboutMe />
-          <ExperienceSection />
-          <section className="min-h-screen flex justify-center">
-            <h2 className="text-6xl font-bold">Skills</h2>
-          </section>
-        </section>
-      </div>
-    </div>
+      <Divider className="flex justify-center">
+        {"::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"}
+      </Divider>
+
+      <IdentityCard />
+
+      <Divider>
+        {"╔══════════════════════════════════════════════════════════════════════════════════════════╗"}
+      </Divider>
+
+      <WorkGrid />
+
+      <Divider className="text-right">
+        {"╚══════════════════════════════════════════════════════════════════════════════════════════╝"}
+      </Divider>
+
+      <SkillMeters />
+
+      <Divider className="flex justify-center">
+        {"X--------------------------------------------------------------------------------------X"}
+      </Divider>
+
+      <ContactSection />
+    </>
   );
 };
 

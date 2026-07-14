@@ -1,40 +1,160 @@
 @import "tailwindcss";
 
+/* ============================================================
+   CRT Phosphor-Green Terminal — design tokens & system styles
+   ============================================================ */
+:root {
+  --phosphor: #39ff7a;
+  --green-dim: #2bbf5c;
+  --green-faint: #1c7a3c;
+  --sage: #5f8d68;
+  --ink: #eafff1;
+  --amber: #ffd24a;
+  --cyan: #5cf6ff;
+  --border-dim: #143614;
+  --border-bright: #1f4d1f;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: "Orbitron", sans-serif;
+  background-color: #000000;
+  font-family: "JetBrains Mono", "IBM Plex Mono", monospace;
+  color: var(--sage);
+  margin: 0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-
-/* global.css */
-
-* {
-  cursor: none;
+::selection {
+  background: rgba(57, 255, 122, 0.3);
+  color: #fff;
 }
 
-.custom-cursor {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #3b82f6;
-  background: rgba(59, 130, 246, 0.15);
-  border-radius: 9999px;
+/* ── Phosphor glow ── */
+.glow {
+  text-shadow:
+    0 0 8px rgba(57, 255, 122, 0.45),
+    0 0 24px rgba(57, 255, 122, 0.18);
+}
+.glow-soft {
+  text-shadow: 0 0 6px rgba(57, 255, 122, 0.3);
+}
+
+/* ── Name banner (scoped class with !important — preview hosts override bare h1) ── */
+.name-banner {
+  font-size: 60px !important;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+@media (max-width: 640px) {
+  .name-banner {
+    font-size: 40px !important;
+  }
+}
+
+/* ── CRT overlays ── */
+.scanline-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  background: repeating-linear-gradient(
+    transparent 0 1px,
+    rgba(0, 0, 0, 0.25) 2px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+  opacity: 0.6;
+}
+.vignette {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  background: radial-gradient(circle, transparent 40%, rgba(0, 0, 0, 0.4) 100%);
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.8);
+}
+.radial-glow-1 {
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
+  width: 60vw;
+  height: 60vh;
+  background: radial-gradient(circle at 100% 0%, rgba(57, 255, 122, 0.08) 0%, transparent 70%);
   pointer-events: none;
-  transform: translate(-50%, -50%);
-  z-index: 99999;
-  backdrop-filter: blur(4px);
-  transition:
-    width 0.2s ease,
-    height 0.2s ease,
-    background 0.2s ease,
-    border 0.2s ease,
-    transform 0.08s linear;
+  z-index: 0;
+}
+.radial-glow-2 {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 50vw;
+  height: 50vh;
+  background: radial-gradient(circle at 0% 100%, rgba(57, 255, 122, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
-.custom-cursor.hovered {
-  width: 42px;
-  height: 42px;
-  background: rgba(59, 130, 246, 0.25);
-  border-color: #60a5fa;
+/* ── Blinking block cursor ── */
+.blink {
+  animation: blink 1.1s step-end infinite;
+}
+@keyframes blink {
+  from,
+  to {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ── Terminal furniture ── */
+.terminal-window {
+  border: 1px solid var(--border-bright);
+  box-shadow: 0 0 40px rgba(57, 255, 122, 0.1);
+}
+.nav-link {
+  transition: all 0.2s;
+}
+.nav-link:hover {
+  color: var(--phosphor);
+  text-shadow: 0 0 8px rgba(57, 255, 122, 0.4);
+}
+.project-card {
+  transition: all 0.2s;
+}
+.project-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--phosphor);
+  box-shadow: 0 0 15px rgba(57, 255, 122, 0.15);
+}
+.progress-bar {
+  background: linear-gradient(90deg, var(--green-faint), var(--phosphor));
+  box-shadow: 0 0 10px rgba(57, 255, 122, 0.2);
+  transform-origin: left center;
+}
+/* double-bordered panel (renamed from box-border to avoid Tailwind collision) */
+.term-box {
+  border-style: double;
+  border-width: 3px;
+  border-color: var(--border-dim);
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #000;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-dim);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-bright);
 }
