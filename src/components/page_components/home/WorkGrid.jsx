@@ -17,13 +17,30 @@ const CardLink = ({ href, children }) => (
 
 const ProjectCard = ({ project, index }) => (
   <article
-    className="work-card group relative aspect-video overflow-hidden rounded-[1.5rem] border border-white/10"
+    className="work-card group relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-white/10 md:aspect-video"
     style={{
       background: `linear-gradient(145deg, ${project.tint[0]}cc 0%, ${project.tint[1]}88 45%, #0a0a0a 100%)`,
     }}
   >
+    {/* screenshot — greyscale at rest, full colour once the card is focused */}
+    {project.image ? (
+      <>
+        <img
+          src={project.image}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          className="work-card__shot absolute inset-0 h-full w-full object-cover object-top"
+        />
+        <div
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/10"
+        />
+      </>
+    ) : null}
+
     {/* resting state */}
-    <div className="work-card__rest absolute inset-0 flex flex-col justify-between p-6 md:p-8">
+    <div className="work-card__rest absolute inset-0 z-10 flex flex-col justify-between p-6 md:p-8">
       <div className="flex items-start justify-between">
         <span className="mono text-[10px] tracking-[0.4em] text-white/60">
           {String(index + 1).padStart(2, "0")}
@@ -38,7 +55,7 @@ const ProjectCard = ({ project, index }) => (
     </div>
 
     {/* hover / touch overlay */}
-    <div className="work-card__overlay absolute inset-0 flex flex-col justify-between gap-3 overflow-y-auto bg-black/50 p-6 backdrop-blur-[2px] md:p-8">
+    <div className="work-card__overlay absolute inset-0 z-20 flex flex-col justify-between gap-3 overflow-hidden bg-black/60 p-6 backdrop-blur-[3px] md:p-8">
       <p className="mono shrink-0 text-[10px] tracking-[0.4em] text-[#ff4d00]">
         {project.category}
       </p>
@@ -47,11 +64,11 @@ const ProjectCard = ({ project, index }) => (
         <h3 className="font-display text-2xl text-white md:text-4xl">
           {project.title}
         </h3>
-        <p className="mt-2 max-w-md text-sm leading-relaxed text-zinc-300">
+        <p className="mt-2 line-clamp-2 max-w-md text-sm leading-relaxed text-zinc-300 md:line-clamp-none">
           {project.desc}
         </p>
         <div className="mt-3 flex flex-wrap gap-1.5">
-          {project.tags.map((tag) => (
+          {project.tags.slice(0, 4).map((tag) => (
             <span
               key={tag}
               className="mono rounded-full border border-white/20 px-2.5 py-1 text-[9px] tracking-[0.2em] text-white/70"

@@ -39,7 +39,7 @@ export const profile = {
       "My work splits between enterprise platforms — an applicant tracking system, an HR/ERP workspace, CRM and sales tooling — and e-commerce, where I build custom Salla themes from scratch and automate product data for Salla, Zid and Shopify.",
     ],
     stats: [
-      { value: "13", label: "SHIPPED PROJECTS" },
+      { value: "14", label: "SHIPPED PROJECTS" },
       { value: "03", label: "COMPANIES & CLIENTS" },
       { value: "2024", label: "CS GRADUATE" },
     ],
@@ -116,6 +116,7 @@ export const profile = {
   projects: [
     {
       id: "kader",
+      image: "/work/kader.webp",
       title: "KADER",
       category: "APPLICANT TRACKING SYSTEM",
       desc: "Bilingual (AR/EN) recruitment platform: an interactive Kanban pipeline, automated interview scheduling, take-home tasks and dynamic job form builders with zero-latency navigation.",
@@ -127,6 +128,7 @@ export const profile = {
     },
     {
       id: "sync",
+      image: "/work/sync.webp",
       title: "SYNC",
       category: "ENTERPRISE HR & ERP",
       desc: "Full-scale enterprise workspace bringing HR, IT and Finance into one system, with real-time updates over WebSockets.",
@@ -138,6 +140,7 @@ export const profile = {
     },
     {
       id: "muzawwid",
+      image: "/work/muzawwid.webp",
       title: "MUZAWWID",
       category: "E-COMMERCE AUTOMATION",
       desc: "Turns raw product files into upload-ready templates for Salla and Zid, cutting a manual data chore down to a single pass.",
@@ -178,6 +181,7 @@ export const profile = {
     },
     {
       id: "modified-car-lights",
+      image: "/work/modified-car-lights.webp",
       title: "MODIFIED CAR LIGHTS",
       category: "STOREFRONT — FREELANCE",
       desc: "Storefront for a car lighting retailer, built and shipped as a freelance engagement.",
@@ -208,6 +212,7 @@ export const profile = {
     },
     {
       id: "tabby",
+      image: "/work/tabby.webp",
       title: "TABBY",
       category: "CUSTOM SALLA THEME",
       desc: "Modern Salla theme focused on performance and conversion.",
@@ -217,7 +222,18 @@ export const profile = {
       live: "https://salla.com/themes/1412444137",
     },
     {
+      id: "rose",
+      image: "/work/rose.webp",
+      title: "ROSE",
+      category: "CUSTOM SALLA THEME",
+      desc: "Custom Salla storefront theme.",
+      tags: ["Salla", "Twig", "Tailwind"],
+      status: "PRIVATE",
+      tint: ["#b22222", "#2a0a0a"],
+    },
+    {
       id: "sarie",
+      image: "/work/sarie.webp",
       title: "SARIE",
       category: "CUSTOM SALLA THEME",
       desc: "Fast premium Salla theme built for modern storefronts.",
@@ -227,6 +243,7 @@ export const profile = {
     },
     {
       id: "elbaraka",
+      image: "/work/elbaraka.webp",
       title: "ELBARAKA",
       category: "CUSTOM SALLA THEME",
       desc: "Custom Salla theme with a premium shopping experience.",

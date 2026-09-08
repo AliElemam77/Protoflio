@@ -48,8 +48,8 @@ const FRAGMENT = /* glsl */ `
 
     // Distant cards drain toward monochrome and dim; the centre stays full.
     float lum = dot(tex.rgb, vec3(0.299, 0.587, 0.114));
-    vec3 color = mix(vec3(lum), tex.rgb, 0.3 + 0.7 * uActive);
-    color *= 0.4 + 0.6 * uActive;
+    vec3 color = mix(vec3(lum), tex.rgb, 0.42 + 0.58 * uActive);
+    color *= 0.55 + 0.45 * uActive;
 
     // Orange rim that only the focused card earns.
     vec2 p = (vUv - 0.5) * uPlaneSize;
@@ -57,7 +57,7 @@ const FRAGMENT = /* glsl */ `
     float rim = smoothstep(-uRadius * 0.14, 0.0, d);
     color += uAccent * rim * uActive * 0.55;
 
-    float alpha = tex.a * uOpacity * (0.35 + 0.65 * uActive);
+    float alpha = tex.a * uOpacity * (0.52 + 0.48 * uActive);
     if (alpha < 0.01) discard;
     gl_FragColor = vec4(color, alpha);
   }
@@ -74,12 +74,12 @@ const hexToRgb = (hex) => {
 // card relative to the viewport, a far gentler bend, cheaper geometry.
 function layoutFor(width) {
   if (width < 640) {
-    return { key: "sm", bend: 0.9, heightRatio: 0.94, maxWidthRatio: 0.8, gapRatio: 0.14, segments: 12, compact: true, depth: 0.55 };
+    return { key: "sm", bend: 0.8, heightRatio: 0.96, maxWidthRatio: 0.88, gapRatio: 0.11, segments: 12, compact: true, depth: 0.5 };
   }
   if (width < 1024) {
-    return { key: "md", bend: 1.8, heightRatio: 0.86, maxWidthRatio: 0.52, gapRatio: 0.15, segments: 18, compact: true, depth: 0.8 };
+    return { key: "md", bend: 1.6, heightRatio: 0.94, maxWidthRatio: 0.56, gapRatio: 0.14, segments: 18, compact: true, depth: 0.75 };
   }
-  return { key: "lg", bend: 2.6, heightRatio: 0.86, maxWidthRatio: 0.34, gapRatio: 0.16, segments: 24, compact: false, depth: 1 };
+  return { key: "lg", bend: 2.2, heightRatio: 0.94, maxWidthRatio: 0.42, gapRatio: 0.15, segments: 24, compact: false, depth: 0.9 };
 }
 
 class Card {
@@ -118,7 +118,7 @@ class Card {
     this.x = itemWidth * this.index;
   }
 
-  update({ scroll, direction, total, bend, depth, viewportWidth, speed, time }) {
+  update({ scroll, total, bend, depth, viewportWidth, speed, time }) {
     const mesh = this.mesh;
     mesh.position.x = this.x - scroll - this.extra;
 
@@ -161,9 +161,12 @@ class Card {
     this.program.uniforms.uRadius.value = this.radius * mesh.scale.x;
 
     // ── Infinite wrap ──────────────────────────────────────────────────
+    // Wrap on absolute position, not travel direction: at rest the row must
+    // still be populated on BOTH sides of the focused card. The itemWidth
+    // margin keeps a card from oscillating across the seam.
     const edge = total / 2 + this.itemWidth;
-    if (direction > 0 && x < -edge) this.extra -= total;
-    if (direction < 0 && x > edge) this.extra += total;
+    if (x < -edge) this.extra -= total;
+    else if (x > edge) this.extra += total;
   }
 
   destroy() {
@@ -471,7 +474,6 @@ export default class ExperienceGallery {
     for (const card of this.cards) {
       card.update({
         scroll: this.scroll.current,
-        direction: this.direction,
         total: this.total,
         bend: this.bend,
         depth: this.layout.depth,

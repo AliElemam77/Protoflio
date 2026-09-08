@@ -220,6 +220,21 @@ body {
 .work-card__overlay {
   transition: opacity 0.5s var(--ease);
 }
+.work-card__shot {
+  filter: grayscale(1) contrast(1.05) brightness(0.62);
+  transform: scale(1.02);
+  transition: filter 0.7s var(--ease), transform 1.1s var(--ease);
+}
+.work-card:hover .work-card__shot,
+.work-card:focus-within .work-card__shot {
+  filter: grayscale(0) contrast(1) brightness(0.92);
+  transform: scale(1.06);
+}
+@media (hover: none) {
+  .work-card__shot {
+    filter: grayscale(0) contrast(1) brightness(0.72);
+  }
+}
 .work-card__overlay {
   opacity: 0;
 }

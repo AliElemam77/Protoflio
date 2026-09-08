@@ -85,18 +85,8 @@ const ExperienceTimeline = ({
       {/* Progress — deliberately quiet next to the cards. */}
       <div
         data-anim
-        className="mt-5 flex items-center justify-between gap-6 md:mt-7"
+        className="mt-4 flex items-center justify-end gap-6 md:mt-5"
       >
-        <div className="flex items-center gap-3">
-          <span className="mono text-[11px] tracking-[0.3em] text-[#ff4d00]">
-            {String(index + 1).padStart(2, "0")}
-          </span>
-          <span className="block h-px w-8 bg-zinc-800" />
-          <span className="mono text-[11px] tracking-[0.3em] text-zinc-600">
-            {String(items.length).padStart(2, "0")}
-          </span>
-        </div>
-
         <div className="flex items-center gap-2.5">
           {items.map((item, i) => (
             <button
@@ -110,9 +100,15 @@ const ExperienceTimeline = ({
           ))}
         </div>
 
-        <p className="mono hidden text-[10px] tracking-[0.35em] text-zinc-700 sm:block">
-          DRAG · SWIPE · ← →
-        </p>
+        <div className="flex items-center gap-5">
+          <p className="mono hidden text-[10px] tracking-[0.35em] text-zinc-700 sm:block">
+            DRAG · SWIPE · ← →
+          </p>
+          <p className="mono text-[11px] tracking-[0.3em] text-zinc-600">
+            <span className="text-[#ff4d00]">{String(index + 1).padStart(2, "0")}</span>
+            {` / ${String(items.length).padStart(2, "0")}`}
+          </p>
+        </div>
       </div>
 
       {/* Semantic mirror of what the canvas is drawing. */}
