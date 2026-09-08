@@ -9,10 +9,10 @@ const SkillsMarquee = () => {
       <div className="marquee mask-x gap-10">
         {track.map((skill, i) => (
           <span
-            key={`${skill.label}-${i}`}
+            key={`${skill}-${i}`}
             className="mono flex shrink-0 items-center gap-3 text-[11px] tracking-[0.3em] text-zinc-500"
           >
-            {skill.label}
+            {skill}
             <span className="text-[#ff4d00]">/</span>
           </span>
         ))}

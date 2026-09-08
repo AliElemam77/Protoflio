@@ -48,7 +48,7 @@ export const profile = {
   // ── Experience ──
   experience: {
     tag: "THE ROAD SO FAR",
-    title: "PATH",
+    title: "EXPERIENCE",
     note: "Roles, training and the degree behind the work.",
     roles: [
       {
@@ -123,6 +123,7 @@ export const profile = {
       status: "LIVE",
       tint: ["#ff4d00", "#b22222"],
       live: "https://kader-teal.vercel.app/",
+      repo: "https://github.com/AliElemam77/Kader---",
     },
     {
       id: "sync",

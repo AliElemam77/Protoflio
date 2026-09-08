@@ -223,10 +223,12 @@ body {
 .work-card__overlay {
   opacity: 0;
 }
-.work-card:hover .work-card__rest {
+.work-card:hover .work-card__rest,
+.work-card:focus-within .work-card__rest {
   opacity: 0;
 }
-.work-card:hover .work-card__overlay {
+.work-card:hover .work-card__overlay,
+.work-card:focus-within .work-card__overlay {
   opacity: 1;
 }
 /* Touch devices have no hover — show the project detail by default. */
@@ -237,6 +239,47 @@ body {
   .work-card__overlay {
     opacity: 1;
   }
+}
+
+/* ── Experience rows ── */
+.exp-row {
+  transition: background-color 0.5s var(--ease), padding-left 0.5s var(--ease);
+}
+.exp-row:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+  padding-left: 1rem;
+}
+
+/* ── Experience timeline (WebGL) ── */
+.exp-canvas {
+  position: relative;
+  min-height: 300px;
+  /* Vertical gestures stay with the page's section navigation; horizontal
+     ones belong to the gallery. */
+  touch-action: pan-y;
+  outline: none;
+}
+.exp-canvas:focus-visible {
+  outline: 1px solid var(--orange);
+  outline-offset: 10px;
+  border-radius: 1.5rem;
+}
+.exp-canvas.is-dragging {
+  cursor: grabbing;
+}
+.exp-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 9999px;
+  background: var(--line);
+  transition: background-color 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.exp-dot:hover {
+  background: var(--muted);
+}
+.exp-dot.is-active {
+  background: var(--orange);
+  transform: scale(1.35);
 }
 
 /* ── Portrait frame ── */
