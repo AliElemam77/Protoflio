@@ -1,6 +1,5 @@
-import AppRouter from './routes/AppRouter'
-import './App.css'
-import CustomCursor from './components/commen/CustomCursor'
+import AppRouter from "./routes/AppRouter";
+import CustomCursor from "./components/commen/CustomCursor";
 
 function App() {
   return (
@@ -8,7 +7,7 @@ function App() {
       <CustomCursor />
       <AppRouter />
     </>
-  )
+  );
 }
 
-export default App
+export default App;

@@ -1,63 +1,53 @@
+import { useCallback } from "react";
 import { Outlet } from "react-router-dom";
-import useHomeAnimations from "../../utils/hooks/useHomeAnimations";
-import { profile } from "../../data/profile";
+import ExperienceProvider from "../../context/ExperienceProvider";
+import { useExperience } from "../../context/experienceContext";
+import Header from "../Navbar";
+import MenuOverlay from "../Navbar/MenuOverlay";
+import GrainOverlay from "../commen/GrainOverlay";
+import MeshBlobs from "../commen/MeshBlobs";
+import SectionIndicator from "../commen/SectionIndicator";
+import Loader from "../commen/Loader";
 
-export default function Layout() {
-  useHomeAnimations();
+const Shell = () => {
+  const { setReady } = useExperience();
+  const handleLoaded = useCallback(() => setReady(true), [setReady]);
 
   return (
-    <div id="smooth-wrapper" className="relative min-h-screen bg-black">
-      {/* CRT overlays (fixed, full-viewport) */}
-      <div className="radial-glow-1" />
-      <div className="radial-glow-2" />
-      <div className="scanline-overlay" />
-      <div className="vignette" />
+    <div className="relative h-[100dvh] w-screen overflow-hidden bg-[#080808]">
+      {/* Atmosphere */}
+      <MeshBlobs />
+      <GrainOverlay />
 
+      {/* Chrome scrims — keep scrolled content legible under the fixed UI */}
       <div
-        id="smooth-content"
-        className="relative z-10 flex min-h-screen flex-col items-center p-4 md:p-8"
-      >
-        {/* Terminal window */}
-        <div className="terminal-window relative flex w-full max-w-[1120px] flex-col overflow-hidden rounded-[4px] bg-[#050805]">
-          {/* Title bar */}
-          <div className="flex h-10 shrink-0 items-center justify-between border-b border-[#1f4d1f] bg-[#070b07] px-4">
-            <div className="flex items-center gap-2">
-              <div className="flex gap-1.5">
-                <span className="h-3 w-3 rounded-full bg-[#ff5f56]" />
-                <span className="h-3 w-3 rounded-full bg-[#ffbd2e]" />
-                <span className="h-3 w-3 rounded-full bg-[#27c93f]" />
-              </div>
-              <span className="ml-4 text-[13px] font-medium">
-                <span className="glow-soft text-[#eafff1]">{profile.user}</span>
-                <span className="text-[#5f8d68]">@{profile.host}: ~/dev</span>
-              </span>
-            </div>
-            <nav className="hidden items-center gap-6 text-[13px] md:flex">
-              <a href="#work" className="nav-link">[ ~/work ]</a>
-              <a href="#stack" className="nav-link">[ ~/stack ]</a>
-              <a href="#contact" className="nav-link">[ ~/contact ]</a>
-              <span className="flex items-center gap-2">
-                <span className="blink h-2 w-2 bg-[#ffd24a] shadow-[0_0_8px_#ffd24a]" />
-                <span className="text-[11px] font-bold text-[#ffd24a]">ONLINE</span>
-              </span>
-            </nav>
-          </div>
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-x-0 top-0 z-[7950] h-28 bg-gradient-to-b from-[#080808] via-[#080808]/80 to-transparent"
+      />
+      <div
+        aria-hidden="true"
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-40 h-24 bg-gradient-to-t from-[#080808] via-[#080808]/80 to-transparent"
+      />
 
-          {/* Terminal content (shell session) */}
-          <div className="flex flex-col gap-12 p-6 md:p-10">
-            <Outlet />
-          </div>
+      {/* Chrome */}
+      <Header />
+      <MenuOverlay />
+      <SectionIndicator />
 
-          {/* Footer */}
-          <footer className="flex select-none flex-col items-center justify-between gap-2 border-t border-[#1f4d1f] bg-[#070b07] px-6 py-4 text-[10px] sm:flex-row">
-            <div className="flex items-center gap-2">
-              <span className="font-bold">{profile.footer.echo}</span>
-              <span className="blink h-4 w-2 bg-[#39ff7a]" />
-            </div>
-            <div className="font-mono text-[#1c7a3c]">{profile.footer.git}</div>
-          </footer>
-        </div>
-      </div>
+      {/* Sections */}
+      <main className="relative z-10 h-full w-full">
+        <Outlet />
+      </main>
+
+      <Loader onDone={handleLoaded} />
     </div>
+  );
+};
+
+export default function Layout() {
+  return (
+    <ExperienceProvider>
+      <Shell />
+    </ExperienceProvider>
   );
 }

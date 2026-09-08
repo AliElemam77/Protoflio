@@ -1,142 +1,108 @@
-import { useEffect } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { profile } from "../../../data/profile";
 
-gsap.registerPlugin(ScrollTrigger);
+const { about, skills } = profile;
 
-const experiencesData = [
-  {
-    id: 1,
-    title: "Frontend Developer",
-    description:
-      "Frontend developer building responsive web apps using React, Next.js, TypeScript, Redux Toolkit, and TailwindCSS. Focused on modern UI, API integration, and performance optimization.",
-    className: "cyan",
-    x: 150,
-  },
-  {
-    id: 2,
-    title: "React & Next.js Developer",
-    description:
-      "Built e-learning, CRM, and e-commerce applications using React and Next.js. Experienced in clean architecture, authentication, RTK Query, and responsive UI development.",
-    className: "blue",
-    x: 150,
-  },
-  {
-    id: 3,
-    title: "E-Commerce & Theme Developer",
-    description:
-      "Developed custom storefronts for Salla, Zid, and WordPress. Focused on performance optimization, dynamic UI sections, and smooth shopping experiences.",
-    className: "yellow",
-    x: 150,
-  },
-];
-const AboutMe = () => {
-  useEffect(() => {
-    gsap.from(".about-title", {
-      y: 80,
-      opacity: 0,
-      duration: 2,
-      ease: "power4.inOut",  
-          scrollTrigger: {
-          trigger: `.about-title`,
-          start: "bottom 100%",
-          end: "bottom 80%",
-          scrub: 1,
-        }, 
-    });
-
-    gsap.from(".about-text", {
-      y: 40,
-      opacity: 0,
-      duration: 2,
-      delay: 0.2,
-      ease: "power4.out",
-          scrollTrigger: {
-          trigger: `.about-text`,
-          start: "bottom 100%",
-          end: "bottom 80%",
-          scrub: 1,
-        },
-    });
-
-    gsap.from(".about-description", {
-      y: 20,
-      opacity: 0,
-      duration: 2,
-      delay: 0.4,
-      ease: "power4.out",
-          scrollTrigger: {
-          trigger: `.about-description`,
-          start: "bottom 100%",
-          end: "bottom 80%",
-          scrub: 1,
-        },
-    });
-
-    experiencesData.forEach((item) => {
-
-      gsap.from(`.${item.className}`, {
-        x: item.x,
-        opacity: 0,
-        duration: 15,
-        ease: "power3.inOut",
-        stagger: 20,
-        scrollTrigger: {
-          trigger: `.${item.className}`,
-          start: "bottom 150%",
-          end: "bottom 90%",
-          scrub: 1,
-        },
-      });
-    });
-
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    };
-  }, []);
-
+const SkillsMarquee = () => {
+  const track = [...skills, ...skills];
   return (
-    <section className="min-h-screen relative flex flex-col gap-10 items-center justify-center w-full overflow-hidden px-4 py-12 md:p-6 lg:p-8 ">
-      {/* title */}
-      <div className="text-center flex flex-col gap-5 items-center justify-center">
-        <p className="about-title text-white/60 uppercase tracking-[0.35em] text-sm font-medium">
-          About Me
-        </p>
-
-        <h2 className="about-text text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-[1.15] font-black text-white max-w-5xl">
-          Hi, I’m{" "}
-          <span className="text-yellow-400 ">Ali Elemam</span>{" "}
-          — crafting modern, scalable, and high-performance web experiences.
-        </h2>
-
-        <p className="about-description text-white/50 text-base md:text-lg max-w-3xl leading-relaxed">
-          I build responsive interfaces, smooth interactions, and optimized
-          digital products focused on performance, clean architecture, and
-          exceptional user experience.
-        </p>
-      </div>
-      <div className="container mx-auto flex flex-col lg:flex-row gap-8 w-full">
-        {experiencesData.map((item) => (
-          <div
-            key={item.id}
-            className={`${item.className}   border-2 border-white/30 backdrop-blur-xl min-h-[50vh] px-4 md:px-6 lg:px-8 rounded-[40px] flex flex-col justify-center overflow-hidden`}
+    <div className="relative mt-10 overflow-hidden border-y border-white/10 py-4">
+      <div className="marquee mask-x gap-10">
+        {track.map((skill, i) => (
+          <span
+            key={`${skill.label}-${i}`}
+            className="mono flex shrink-0 items-center gap-3 text-[11px] tracking-[0.3em] text-zinc-500"
           >
-            <span className="text-white/70 uppercase tracking-[0.3em] text-sm mb-4">
-               0{item.id}
-            </span>
-
-            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-white mb-6">
-              {item.title}
-            </h2>
-
-            <p className="text-lg md:text-xl text-white/90  leading-relaxed">
-              {item.description}
-            </p>
-          </div>
+            {skill.label}
+            <span className="text-[#ff4d00]">/</span>
+          </span>
         ))}
       </div>
-    </section>
+    </div>
   );
 };
+
+const AboutMe = () => (
+  <div className="section-content center-safe w-full px-8 pb-24 pt-28 md:px-24 md:pb-24 md:pt-32">
+    <p data-anim className="label mb-8 text-[#ff4d00]">
+      {about.tag}
+    </p>
+
+    <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-20">
+      {/* ── Left column ── */}
+      <div className="order-2 lg:order-1 lg:col-span-7">
+        <h2 className="font-display text-[13vw] leading-[0.85] md:text-[5.5vw]">
+          <span data-anim className="block text-white">
+            {about.line1}
+          </span>
+          <span data-anim className="outline-text block italic">
+            {about.line2}
+          </span>
+        </h2>
+
+        <div className="mt-6 max-w-xl space-y-4">
+          {about.body.map((paragraph) => (
+            <p
+              key={paragraph.slice(0, 24)}
+              data-anim
+              className="text-[0.95rem] text-zinc-400 md:text-[1.05rem]"
+              style={{ lineHeight: 1.75 }}
+            >
+              {paragraph}
+            </p>
+          ))}
+        </div>
+
+        <div data-anim className="mt-10 flex flex-wrap gap-8 md:gap-16">
+          {about.stats.map((stat) => (
+            <div key={stat.label}>
+              <p className="font-display text-4xl text-white md:text-6xl">
+                {stat.value}
+                <span className="text-[#ff4d00]">.</span>
+              </p>
+              <p className="mono mt-3 text-[10px] tracking-[0.3em] text-zinc-600">
+                {stat.label}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── Right column: portrait ── */}
+      <div data-anim className="order-1 lg:order-2 lg:col-span-5">
+        <div className="relative mx-auto w-full max-w-[15rem] sm:max-w-xs lg:max-w-sm">
+          {/* orange glow behind the bottom-right corner */}
+          <div
+            aria-hidden="true"
+            className="absolute -bottom-14 -right-14 h-64 w-64 rounded-full opacity-90"
+            style={{
+              background: "radial-gradient(circle, #ff4d00, transparent 70%)",
+              filter: "blur(60px)",
+            }}
+          />
+          <figure className="portrait relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-white/10">
+            <img
+              src={about.portrait}
+              alt={about.portraitAlt}
+              className="h-full w-full object-cover object-top"
+              loading="lazy"
+              decoding="async"
+            />
+            <div
+              aria-hidden="true"
+              className="absolute inset-x-0 bottom-0 h-28 bg-gradient-to-t from-black/80 to-transparent"
+            />
+            <figcaption className="mono absolute bottom-5 left-5 text-[10px] tracking-[0.4em] text-white/80">
+              {profile.name}
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+
+    <div data-anim>
+      <SkillsMarquee />
+    </div>
+  </div>
+);
 
 export default AboutMe;

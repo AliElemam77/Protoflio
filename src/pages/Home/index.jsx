@@ -1,50 +1,39 @@
-// Home.jsx — the shell session, rendered top-to-bottom inside the terminal window.
+// The whole portfolio lives here as four fixed section layers that swap
+// with a scale/fade transition — the page itself never scrolls.
 
-import BootLog from "../../components/page_components/home/BootLog";
+import SectionShell from "../../components/commen/SectionShell";
 import HeroSection from "../../components/page_components/home/HeroSection";
-import IdentityCard from "../../components/page_components/home/IdentityCard";
+import AboutMe from "../../components/page_components/home/AboutMe";
 import WorkGrid from "../../components/page_components/home/WorkGrid";
-import SkillMeters from "../../components/page_components/home/SkillMeters";
 import ContactSection from "../../components/page_components/home/ContactSection";
+import { useExperience } from "../../context/experienceContext";
 
-const Divider = ({ children, className = "" }) => (
-  <div
-    className={`select-none overflow-hidden whitespace-nowrap py-4 font-mono text-[#143614] opacity-50 ${className}`}
-  >
-    {children}
-  </div>
-);
+const SECTION_VIEWS = {
+  home: HeroSection,
+  about: AboutMe,
+  work: WorkGrid,
+  contact: ContactSection,
+};
 
 const Home = () => {
+  const { sections, current, ready } = useExperience();
+
   return (
-    <>
-      <BootLog />
-      <HeroSection />
-
-      <Divider className="flex justify-center">
-        {"::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::"}
-      </Divider>
-
-      <IdentityCard />
-
-      <Divider>
-        {"╔══════════════════════════════════════════════════════════════════════════════════════════╗"}
-      </Divider>
-
-      <WorkGrid />
-
-      <Divider className="text-right">
-        {"╚══════════════════════════════════════════════════════════════════════════════════════════╝"}
-      </Divider>
-
-      <SkillMeters />
-
-      <Divider className="flex justify-center">
-        {"X--------------------------------------------------------------------------------------X"}
-      </Divider>
-
-      <ContactSection />
-    </>
+    <div className="relative h-full w-full">
+      {sections.map((section, i) => {
+        const View = SECTION_VIEWS[section.id];
+        return (
+          <SectionShell
+            key={section.id}
+            id={section.id}
+            label={section.label}
+            active={ready && current === i}
+          >
+            <View />
+          </SectionShell>
+        );
+      })}
+    </div>
   );
 };
 
