@@ -90,15 +90,15 @@ const ProjectCard = ({ project, index }) => (
 );
 
 const WorkGrid = () => (
-  <div className="section-content w-full px-8 pb-24 pt-28 md:px-24 md:pb-28 md:pt-36">
-    <div className="mb-8 flex shrink-0 flex-col gap-4 md:flex-row md:items-end md:justify-between">
+  <div className="section-content w-full px-8 pb-20 pt-24 md:px-24 md:pb-24 md:pt-32">
+    <div className="mb-5 flex shrink-0 flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div>
-        <p data-anim className="label mb-5 text-[#ff4d00]">
+        <p data-anim className="label mb-4 text-[#ff4d00]">
           {work.tag}
         </p>
         <h2
           data-anim
-          className="font-display text-[16vw] leading-[0.85] text-white md:text-[9vw]"
+          className="font-display text-[13vw] leading-[0.85] text-white md:text-[6.5vw]"
         >
           {work.title}
         </h2>

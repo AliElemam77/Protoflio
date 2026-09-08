@@ -36,6 +36,7 @@ const ExperienceTimeline = ({
   wheelAxis = "x",
   initialIndex = 0,
   accent = "#ff4d00",
+  autoplay = 4500,
 }) => {
   const containerRef = useRef(null);
   const galleryRef = useRef(null);
@@ -53,6 +54,7 @@ const ExperienceTimeline = ({
       wheelAxis,
       initialIndex,
       accent,
+      autoplay,
       onIndexChange: setIndex,
     });
     galleryRef.current = gallery;
@@ -61,7 +63,17 @@ const ExperienceTimeline = ({
       gallery.destroy();
       galleryRef.current = null;
     };
-  }, [accent, bend, initialIndex, items, scrollEase, scrollSpeed, staticMode, wheelAxis]);
+  }, [
+    accent,
+    autoplay,
+    bend,
+    initialIndex,
+    items,
+    scrollEase,
+    scrollSpeed,
+    staticMode,
+    wheelAxis,
+  ]);
 
   // The section stack keeps every layer mounted — only the visible one renders.
   useEffect(() => {

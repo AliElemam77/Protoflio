@@ -228,8 +228,9 @@ export const profile = {
       category: "CUSTOM SALLA THEME",
       desc: "Custom Salla storefront theme.",
       tags: ["Salla", "Twig", "Tailwind"],
-      status: "PRIVATE",
+      status: "LIVE",
       tint: ["#b22222", "#2a0a0a"],
+      live: "https://salla.com/themes/63647655",
     },
     {
       id: "sarie",
@@ -238,8 +239,9 @@ export const profile = {
       category: "CUSTOM SALLA THEME",
       desc: "Fast premium Salla theme built for modern storefronts.",
       tags: ["Salla", "Twig", "Tailwind"],
-      status: "PRIVATE",
+      status: "LIVE",
       tint: ["#ff8c00", "#b22222"],
+      live: "https://salla.com/themes/1477558347",
     },
     {
       id: "elbaraka",
@@ -248,8 +250,9 @@ export const profile = {
       category: "CUSTOM SALLA THEME",
       desc: "Custom Salla theme with a premium shopping experience.",
       tags: ["Salla", "Twig", "Tailwind"],
-      status: "PRIVATE",
+      status: "LIVE",
       tint: ["#b22222", "#1a0505"],
+      live: "https://salla.com/themes/1247918317",
     },
     {
       id: "silina",

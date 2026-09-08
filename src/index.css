@@ -158,6 +158,21 @@ body {
     justify-content: safe center;
   }
 }
+/* On short viewports the fixed chrome eats the content area, so pull the
+   section padding in and let the scrollable body take the space back. */
+@media (max-height: 820px) {
+  .section-content {
+    padding-top: 6rem;
+    padding-bottom: 4rem;
+  }
+}
+@media (max-height: 700px) {
+  .section-content {
+    padding-top: 5rem;
+    padding-bottom: 3.25rem;
+  }
+}
+
 /* Scroll areas that fade out at their edges instead of painting a solid scrim */
 .mask-y {
   -webkit-mask-image: linear-gradient(to bottom, transparent, #000 4%, #000 96%, transparent);
@@ -241,10 +256,12 @@ body {
 .work-card:hover .work-card__rest,
 .work-card:focus-within .work-card__rest {
   opacity: 0;
+  transition-duration: 0.3s;
 }
 .work-card:hover .work-card__overlay,
 .work-card:focus-within .work-card__overlay {
   opacity: 1;
+  transition-delay: 0.16s;
 }
 /* Touch devices have no hover — show the project detail by default. */
 @media (hover: none) {

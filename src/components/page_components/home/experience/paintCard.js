@@ -184,12 +184,24 @@ export function paintCard(item, { index, width, compact = false, quality = 2 }) 
   ctx.fillRect(pad, y, inner, Math.max(1, 1.2 * s));
 
   // ── Company · period ──────────────────────────────────────────────────
-  y += 52 * s;
-  ctx.font = `500 ${Math.round(24 * s)}px ${MONO}`;
+  // The employer is the headline of a career card, so it gets display type at
+  // accent colour — shrunk to fit rather than clipped for long institution names.
+  let compSize = Math.round((compact ? 42 : 48) * s);
+  ctx.font = `900 ${compSize}px ${DISPLAY}`;
+  let compLines = wrap(ctx, item.company.toUpperCase(), inner, 2);
+  while (compLines.length > 1 && compSize > 26 * s) {
+    compSize = Math.round(compSize * 0.88);
+    ctx.font = `900 ${compSize}px ${DISPLAY}`;
+    compLines = wrap(ctx, item.company.toUpperCase(), inner, 2);
+  }
   ctx.fillStyle = accent;
-  tracked(ctx, item.company.toUpperCase(), pad, y, 5 * s);
+  y += 34 * s;
+  for (const line of compLines) {
+    y += compSize * 0.92;
+    ctx.fillText(line, pad, y);
+  }
 
-  y += 38 * s;
+  y += 34 * s;
   ctx.font = `400 ${Math.round(20 * s)}px ${MONO}`;
   ctx.fillStyle = "rgba(255,255,255,0.42)";
   tracked(ctx, item.period.toUpperCase(), pad, y, 4.5 * s);
@@ -199,7 +211,7 @@ export function paintCard(item, { index, width, compact = false, quality = 2 }) 
   ctx.font = `400 ${bodySize}px ${BODY}`;
   ctx.fillStyle = "rgba(255,255,255,0.62)";
   const descLines = wrap(ctx, item.description, inner, compact ? 4 : 5);
-  y += 30 * s;
+  y += 26 * s;
   for (const line of descLines) {
     y += bodySize * 1.55;
     ctx.fillText(line, pad, y);

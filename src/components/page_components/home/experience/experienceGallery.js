@@ -184,6 +184,11 @@ export default class ExperienceGallery {
     this.scrollSpeed = options.scrollSpeed ?? 2;
     this.scrollEase = options.scrollEase ?? 0.06;
     this.wheelAxis = options.wheelAxis ?? "x";
+    // Auto-advance, in ms. `resumeDelay` is how long a human touch wins for.
+    this.autoplay = options.autoplay ?? 4500;
+    this.resumeDelay = options.resumeDelay ?? 6000;
+    this.lastAdvance = 0;
+    this.lastInteraction = -Infinity;
     this.accent = options.accent ?? "#ff4d00";
     this.onIndexChange = options.onIndexChange;
 
@@ -221,6 +226,7 @@ export default class ExperienceGallery {
     this.resize();
     this.centerInitial();
     this.addEvents();
+    this.lastAdvance = performance.now();
     this.raf = requestAnimationFrame(this.update);
   }
 
@@ -358,6 +364,12 @@ export default class ExperienceGallery {
   }
 
   // ── Input ─────────────────────────────────────────────────────────────
+  markInteraction() {
+    const now = performance.now();
+    this.lastInteraction = now;
+    this.lastAdvance = now;
+  }
+
   onWheel(event) {
     if (!this.itemWidth) return;
     const horizontal = Math.abs(event.deltaX) > Math.abs(event.deltaY);
@@ -366,6 +378,7 @@ export default class ExperienceGallery {
     // Vertical wheel is left to the page's section navigation on purpose.
     event.preventDefault();
     event.stopPropagation();
+    this.markInteraction();
     this.scroll.target += delta * 0.012 * this.scrollSpeed * this.itemWidth;
     this.snapSoon();
   }
@@ -373,6 +386,7 @@ export default class ExperienceGallery {
   onPointerDown(event) {
     if (!this.itemWidth) return;
     if (event.button !== undefined && event.button !== 0) return;
+    this.markInteraction();
     this.dragging = true;
     this.dragMoved = 0;
     this.startX = event.clientX;
@@ -383,6 +397,7 @@ export default class ExperienceGallery {
 
   onPointerMove(event) {
     if (!this.dragging) return;
+    this.markInteraction();
     const distance = (this.startX - event.clientX) * 0.02 * this.scrollSpeed;
     this.dragMoved = Math.abs(this.startX - event.clientX);
     this.scroll.target = this.scroll.position + distance * this.itemWidth;
@@ -402,6 +417,7 @@ export default class ExperienceGallery {
   }
 
   onKeyDown(event) {
+    if (event.key === "ArrowRight" || event.key === "ArrowLeft") this.markInteraction();
     if (event.key === "ArrowRight") {
       event.preventDefault();
       event.stopPropagation();
@@ -420,6 +436,7 @@ export default class ExperienceGallery {
 
   goTo(index) {
     if (!this.itemWidth) return;
+    this.markInteraction();
     const current = Math.round(this.scroll.target / this.itemWidth);
     const length = this.items.length;
     // Travel the short way round the loop.
@@ -457,6 +474,8 @@ export default class ExperienceGallery {
   }
 
   setPaused(paused) {
+    // Leaving the section and coming back should not fire a queued advance.
+    if (this.paused && !paused) this.lastAdvance = performance.now();
     this.paused = paused;
   }
 
@@ -489,6 +508,19 @@ export default class ExperienceGallery {
     if (focused.index !== this.activeIndex) {
       this.activeIndex = focused.index;
       this.onIndexChange?.(focused.index);
+    }
+
+    // Auto-advance, unless a human is driving.
+    if (this.autoplay && !this.dragging) {
+      const now = performance.now();
+      if (
+        now - this.lastInteraction > this.resumeDelay &&
+        now - this.lastAdvance > this.autoplay
+      ) {
+        this.lastAdvance = now;
+        this.scroll.target =
+          Math.round(this.scroll.target / this.itemWidth + 1) * this.itemWidth;
+      }
     }
 
     this.scroll.last = this.scroll.current;
