@@ -16,7 +16,8 @@ const SectionShell = ({ id, label, active, children, className = "" }) => {
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const items = el.querySelectorAll("[data-anim]");
 
-    gsap.killTweensOf([el, items]);
+    gsap.killTweensOf(el);
+    if (items.length) gsap.killTweensOf(items);
 
     if (active) {
       el.scrollTop = 0;

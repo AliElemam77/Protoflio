@@ -3,7 +3,7 @@
 export const profile = {
   brand: "AE.",
   name: "ALI ELEMAM",
-  role: "Front-End Developer — E-commerce & Software",
+  role: "Full-Stack Developer — E-commerce & Software",
   location: "Mansoura, Egypt",
   timezone: "UTC+2",
   status: "CURRENTLY AT TAR GROUP",
@@ -13,7 +13,7 @@ export const profile = {
     { id: "home", label: "HOME", index: "01" },
     { id: "about", label: "ABOUT", index: "02" },
     { id: "experience", label: "EXPERIENCE", index: "03" },
-    { id: "work", label: "WORK", index: "04" },
+    { id: "journey", label: "JOURNEY", index: "04" },
     { id: "contact", label: "CONTACT", index: "05" },
   ],
 
@@ -45,11 +45,107 @@ export const profile = {
     ],
   },
 
-  // ── Experience ──
-  experience: {
+  // ── Journey (Replaces Work section with interactive scroll video scrubbing) ──
+  journey: {
     tag: "THE ROAD SO FAR",
+    title: "JOURNEY",
+    arabicTitle: "رحلتي المهنية",
+    note: "Scroll through key career milestones, technologies, and deployments.",
+    video: {
+      src: "/journey.mp4",
+      poster: "/work/kader.webp",
+      duration: 20,
+    },
+    stages: [
+      {
+        id: "mansoura",
+        index: "01",
+        badge: "THE FOUNDATION",
+        title: "Mansoura University",
+        role: "B.Sc. Computer Science",
+        period: "2021 — 2024",
+        kind: "EDUCATION · MANSOURA, EGYPT",
+        headline: "Algorithms, Systems & Computer Science",
+        summary:
+          "Four rigorous years building foundational depth: data structures, algorithm optimization, relational database modeling, and software engineering principles.",
+        stack: ["C++", "OOP", "Data Structures", "Algorithms", "Relational DBs"],
+        side: "left",
+        videoTime: { start: 0, end: 4 },
+      },
+      {
+        id: "iti",
+        index: "02",
+        badge: "INTENSIVE CRAFT",
+        title: "Information Technology Institute",
+        role: "Front-End & Cross-Platform Track",
+        period: "11/2024 — 05/2025",
+        kind: "9-MONTH INTENSIVE SCHOLARSHIP",
+        headline: "Engineering Scalable Web Interfaces",
+        summary:
+          "Intensive nine-month fellowship mastering contemporary frontend architecture, state machines, mobile development, and team-based agile software delivery.",
+        stack: ["React", "TypeScript", "Redux Toolkit", "Flutter", "Clean Architecture"],
+        side: "right",
+        videoTime: { start: 4, end: 8 },
+      },
+      {
+        id: "mcl",
+        index: "03",
+        badge: "COMMERCIAL DEPLOYMENT",
+        title: "Modified Car Lights",
+        role: "Frontend Developer (Freelance)",
+        period: "FREELANCE · 2025",
+        kind: "CLIENT STOREFRONT",
+        headline: "High-Performance Storefront & SEO",
+        summary:
+          "Delivered an end-to-end commercial storefront for an automotive retail brand with sub-second load times, responsive UI, and optimized search visibility.",
+        stack: ["JavaScript ES6+", "Responsive UX", "Technical SEO", "Performance"],
+        href: "https://modifiedcarlights.com/",
+        side: "left",
+        videoTime: { start: 8, end: 12 },
+      },
+      {
+        id: "taqnit",
+        index: "04",
+        badge: "SAAS & REAL-TIME SCALE",
+        title: "Taqnit Al-M'alumat",
+        role: "Frontend Developer",
+        period: "08/2025 — 02/2026",
+        kind: "SAAS & REAL-TIME PRODUCTS",
+        headline: "Real-Time WebSockets & CRM Systems",
+        summary:
+          "Engineered three core SaaS applications: a WhatsApp API-powered CRM, dynamic sales quotation software with instant PDF generation, and a live WhatsApp monitoring system.",
+        stack: ["React", "TypeScript", "Socket.IO", "React Query", "Zustand", "Redux"],
+        href: "https://www.linkedin.com/company/taqnit-almalumat/",
+        side: "right",
+        videoTime: { start: 12, end: 16 },
+      },
+      {
+        id: "tar",
+        index: "05",
+        badge: "ENTERPRISE ARCHITECTURE",
+        title: "TAR Group",
+        role: "Frontend Developer",
+        period: "03/2026 — PRESENT",
+        kind: "E-COMMERCE & SOFTWARE",
+        headline: "Enterprise ERP & Automation Engines",
+        summary:
+          "Driving the frontend of bilingual enterprise products: Kader ATS (Kanban workflows & job pipelines), an ERP workspace for HR/IT/Finance, and automated product catalog transformers for Salla and Zid.",
+        stack: ["React 19", "Next.js", "NestJS", "TypeScript", "Prisma", "PostgreSQL"],
+        href: "https://www.linkedin.com/company/targroup1/home/",
+        current: true,
+        side: "left",
+        videoTime: { start: 16, end: 20 },
+      },
+    ],
+  },
+
+  // ── Experience (WebGL Timeline of Roles) ──
+  experience: {
+    tag: "CAREER HISTORY",
     title: "EXPERIENCE",
-    note: "Roles, training and the degree behind the work.",
+    subTitle: "EXPERIENCE",
+    arabicTitle: "الخبرات المهنية",
+    note: "The evolution from Computer Science fundamentals to enterprise platforms and SaaS architecture.",
     roles: [
       {
         id: "tar",
@@ -253,15 +349,6 @@ export const profile = {
       status: "LIVE",
       tint: ["#b22222", "#1a0505"],
       live: "https://salla.com/themes/1247918317",
-    },
-    {
-      id: "silina",
-      title: "SILINA",
-      category: "CUSTOM SALLA THEME",
-      desc: "Fashion-focused Salla theme with an elegant UI and responsive layouts.",
-      tags: ["Salla", "Twig", "Tailwind"],
-      status: "PRIVATE",
-      tint: ["#ff8c00", "#2a1400"],
     },
   ],
 

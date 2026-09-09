@@ -5,7 +5,7 @@ import SectionShell from "../../components/commen/SectionShell";
 import HeroSection from "../../components/page_components/home/HeroSection";
 import AboutMe from "../../components/page_components/home/AboutMe";
 import ExperienceSection from "../../components/page_components/home/experience/ExperienceSection";
-import WorkGrid from "../../components/page_components/home/WorkGrid";
+import JourneySection from "../../components/page_components/home/journey/JourneySection";
 import ContactSection from "../../components/page_components/home/ContactSection";
 import { useExperience } from "../../context/experienceContext";
 
@@ -13,7 +13,8 @@ const SECTION_VIEWS = {
   home: HeroSection,
   about: AboutMe,
   experience: ExperienceSection,
-  work: WorkGrid,
+  journey: JourneySection,
+  work: JourneySection,
   contact: ContactSection,
 };
 

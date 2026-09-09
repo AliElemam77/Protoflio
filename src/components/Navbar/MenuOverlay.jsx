@@ -7,6 +7,7 @@ const PREVIEWS = {
   home: { tint: ["#ff4d00", "#b22222"], caption: "THE OPENING FRAME" },
   about: { image: profile.about.portrait, caption: "THE PERSON BEHIND IT" },
   experience: { tint: ["#ff4d00", "#3a1200"], caption: "ROLES, TRAINING, DEGREE" },
+  journey: { image: profile.journey?.video?.poster || profile.projects[0].image, caption: "MILESTONES & JOURNEY" },
   work: { image: profile.projects[0].image, caption: "SELECTED PROJECTS" },
   contact: { tint: ["#b22222", "#1a0505"], caption: "START A CONVERSATION" },
 };
