@@ -14,7 +14,7 @@ const Shell = () => {
   const handleLoaded = useCallback(() => setReady(true), [setReady]);
 
   return (
-    <div className="relative h-[100dvh] w-screen overflow-hidden bg-[#080808]">
+    <div className="portfolio-root relative h-[100dvh] w-screen overflow-hidden bg-[#080808]">
       {/* Atmosphere */}
       <MeshBlobs />
       <GrainOverlay />

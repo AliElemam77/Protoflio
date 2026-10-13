@@ -1,32 +1,28 @@
-import { profile } from "../../../../data/profile";
+import { useMemo } from "react";
+import { useProfileData } from "../../../../context/PortfolioContext";
+import { profile as fallbackProfile } from "../../../../data/profile";
 import ExperienceTimeline from "./ExperienceTimeline";
 
-const { experience } = profile;
-
 /** Start year for the big display token; non-dated entries keep their label. */
-const displayYear = (period) => period.match(/\d{4}/)?.[0] ?? period;
+const displayYear = (period) => String(period || "").match(/\d{4}/)?.[0] ?? period;
 
-// Built once at module scope: the array identity has to stay stable or the
-// timeline would tear down and rebuild its WebGL context on every render.
-// Reversed so the row reads oldest → newest, left to right.
-const ITEMS = [...experience.roles].reverse().map((role) => ({
-  id: role.id,
-  year: displayYear(role.period),
-  role: role.title,
-  company: role.org,
-  period: role.period,
-  description: role.summary,
-  skills: role.stack,
-  href: role.orgHref,
-  current: /PRESENT/i.test(role.period),
-}));
-
-const START_INDEX = Math.max(
-  ITEMS.findIndex((item) => item.current),
-  0
-);
-
-const ExperienceSection = ({ active = true }) => (
+const ExperienceSection = ({ active = true }) => {
+  const { data } = useProfileData();
+  const experience = (data || fallbackProfile).experience;
+  // Memoised so the WebGL timeline keeps a stable array identity per data change.
+  const ITEMS = useMemo(() => [...(experience.roles || [])].reverse().map((role) => ({
+    id: role.id,
+    year: displayYear(role.period),
+    role: role.title,
+    company: role.org,
+    period: role.period,
+    description: role.summary,
+    skills: role.stack,
+    href: role.orgHref,
+    current: /PRESENT/i.test(role.period || ""),
+  })), [experience.roles]);
+  const START_INDEX = Math.max(ITEMS.findIndex((item) => item.current), 0);
+  return (
   <div className="section-content w-full px-8 pb-20 pt-24 md:px-24 md:pb-24 md:pt-32">
     <div className="mb-4 flex shrink-0 flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div>
@@ -55,5 +51,6 @@ const ExperienceSection = ({ active = true }) => (
     />
   </div>
 );
+};
 
 export default ExperienceSection;

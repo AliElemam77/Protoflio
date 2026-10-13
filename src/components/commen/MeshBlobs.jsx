@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useProfileData } from "../../context/PortfolioContext";
 
 // Three background blobs that drift with the cursor at different depths.
 const BLOBS = [
@@ -24,6 +25,11 @@ const BLOBS = [
 
 const MeshBlobs = () => {
   const layerRefs = useRef([]);
+  const { fx, theme } = useProfileData();
+  const glow = fx?.glowRadius ?? 100;
+  const blobOpacity = fx?.blobOpacity ?? 1;
+  const blobsEnabled = fx?.blobsEnabled !== false;
+  const COLORS = [theme?.orange || "#ff4d00", theme?.ember || "#b22222", theme?.amber || "#ff8c00"];
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return undefined;
@@ -47,6 +53,8 @@ const MeshBlobs = () => {
     return () => window.removeEventListener("mousemove", onMove);
   }, []);
 
+  if (!blobsEnabled) return null;
+
   return (
     <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
       {BLOBS.map((blob, i) => (
@@ -60,7 +68,7 @@ const MeshBlobs = () => {
               layerRefs.current[i] = el;
             }}
             className="blob"
-            style={{ backgroundColor: blob.color }}
+            style={{ backgroundColor: COLORS[i % COLORS.length], filter: `blur(${glow}px)`, opacity: blobOpacity }}
           />
         </div>
       ))}

@@ -1,12 +1,15 @@
 import { useExperience } from "../../context/experienceContext";
-import { profile } from "../../data/profile";
+import { useProfileData } from "../../context/PortfolioContext";
+import { profile as fallbackProfile } from "../../data/profile";
 import { MenuIcon, CloseIcon } from "../commen/Icons";
 
 const Header = () => {
   const { menuOpen, setMenuOpen, go } = useExperience();
+  const { data } = useProfileData();
+  const brand = (data || fallbackProfile).brand;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-[8000] flex items-center justify-between p-8 md:p-12">
+    <header className="fixed inset-x-0 top-0 z-[8000] flex items-center justify-between p-5 sm:p-8 md:p-10 lg:p-12">
       <button
         type="button"
         onClick={() => {
@@ -16,7 +19,7 @@ const Header = () => {
         className="font-display text-2xl leading-none text-white transition-colors duration-500 hover:text-[#ff4d00] md:text-3xl"
         aria-label="Back to the top"
       >
-        {profile.brand}
+        {brand}
       </button>
 
       <button

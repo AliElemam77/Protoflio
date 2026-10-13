@@ -9,23 +9,18 @@ import gsap from "gsap";
  * Scrubs forward on scroll-down, rewinds on scroll-up.
  */
 const JourneyVideoPlayer = ({
-  src = "/journey.mp4",
   poster = "/work/kader.webp",
   progress = 0,
   currentStage = 0,
   stages = [],
-  active = true,
   frameCount = 41,
   framesPath = "/frames/frame_",
   framesExt = "jpg",
   padLength = 3,
 }) => {
-  const videoRef = useRef(null);
   const canvasRef = useRef(null);
 
-  const [videoAvailable, setVideoAvailable] = useState(false);
   const [framesAvailable, setFramesAvailable] = useState(false);
-  const [loadedFramesCount, setLoadedFramesCount] = useState(0);
   const [currentFrameNum, setCurrentFrameNum] = useState(1);
   const [scrollDirection, setScrollDirection] = useState("IDLE");
 
@@ -83,7 +78,6 @@ const JourneyVideoPlayer = ({
       img.onload = () => {
         if (!isMounted) return;
         count++;
-        setLoadedFramesCount(count);
         if (count >= Math.min(5, frameCount)) {
           setFramesAvailable(true);
         }

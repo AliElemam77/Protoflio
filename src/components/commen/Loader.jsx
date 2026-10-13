@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
-import { profile } from "../../data/profile";
-
-const MESSAGES = profile.loader.messages;
+import { useProfileData } from "../../context/PortfolioContext";
+import { profile as fallbackProfile } from "../../data/profile";
 
 const Loader = ({ onDone }) => {
+  const { data } = useProfileData();
+  const MESSAGES = (data || fallbackProfile).loader?.messages || ["LOADING"];
   const rootRef = useRef(null);
   const [progress, setProgress] = useState(0);
   const [hidden, setHidden] = useState(false);
@@ -33,8 +34,12 @@ const Loader = ({ onDone }) => {
       onComplete: () => gsap.delayedCall(reduced ? 0 : 0.35, finish),
     });
 
+    // Safety net — never trap the user behind the loader.
+    const fallback = setTimeout(finish, 5000);
+
     return () => {
       tween.kill();
+      clearTimeout(fallback);
     };
   }, [onDone]);
 
@@ -54,7 +59,7 @@ const Loader = ({ onDone }) => {
         <div
           className="orb-pulse absolute h-64 w-64 rounded-full"
           style={{
-            background: "radial-gradient(circle at 35% 30%, #ff4d00, #b22222 70%)",
+            background: "radial-gradient(circle at 35% 30%, var(--orange), var(--ember) 70%)",
             filter: "blur(50px)",
           }}
           aria-hidden="true"

@@ -1,15 +1,12 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import gsap from "gsap";
-import { profile } from "../../../../data/profile";
+import { useProfileData } from "../../../../context/PortfolioContext";
+import { profile as fallbackProfile } from "../../../../data/profile";
 import JourneyMarginalia from "./JourneyMarginalia";
 import JourneyVideoPlayer from "./JourneyVideoPlayer";
 import JourneyStageCard from "./JourneyStageCard";
 
-// All production projects
-const PROJECTS = (profile.projects || []).map((project, index) => ({
-  ...project,
-  index: String(index + 1).padStart(2, "0"),
-}));
+// All production projects (recomputed inside the component from live data)
 
 /**
  * JourneySection (سيكشن الرحلة — رحلة المشاريع)
@@ -22,6 +19,13 @@ const PROJECTS = (profile.projects || []).map((project, index) => ({
  * - Apple-style 60fps canvas frame scrubbing on mouse scroll
  */
 const JourneySection = ({ active = true }) => {
+  const { data } = useProfileData();
+  const liveProfile = data || fallbackProfile;
+  // All production projects
+  const PROJECTS = useMemo(() => ((liveProfile.projects || []).map((project, index) => ({
+    ...project,
+    index: String(index + 1).padStart(2, "0"),
+  }))), [liveProfile.projects]);
   const rootRef = useRef(null);
   const videoContainerRef = useRef(null);
   const textContainerRef = useRef(null);
@@ -34,10 +38,12 @@ const JourneySection = ({ active = true }) => {
   const targetProgressRef = useRef(0);
   const prevProjectIndexRef = useRef(0);
 
+  const projectCount = PROJECTS.length;
+
   // Update dynamic widths, scales and parallax depth (no ping-pong flipping)
   const updateLayoutMotion = useCallback((prog) => {
     const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-    const numProjects = PROJECTS.length;
+    const numProjects = projectCount;
     if (numProjects <= 1) return;
 
     const rawProject = prog * (numProjects - 1);
@@ -106,13 +112,13 @@ const JourneySection = ({ active = true }) => {
         });
       }
     }
-  }, []);
+  }, [projectCount]);
 
   // Jump to specific project
   const goToProject = useCallback(
     (projectIdx) => {
-      const nextIdx = Math.max(0, Math.min(PROJECTS.length - 1, projectIdx));
-      const targetP = nextIdx / Math.max(1, PROJECTS.length - 1);
+      const nextIdx = Math.max(0, Math.min(projectCount - 1, projectIdx));
+      const targetP = nextIdx / Math.max(1, projectCount - 1);
       targetProgressRef.current = targetP;
 
       gsap.killTweensOf(progressRef);
@@ -128,7 +134,7 @@ const JourneySection = ({ active = true }) => {
         },
       });
     },
-    [updateLayoutMotion]
+    [updateLayoutMotion, projectCount]
   );
 
   // Set initial stable positions on mount
@@ -168,6 +174,10 @@ const JourneySection = ({ active = true }) => {
     if (!active) return;
 
     const onWheelCapture = (e) => {
+      // Don't hijack scroll when the menu is open or the user types.
+      const tag = e.target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || e.target?.isContentEditable) return;
+      if (typeof document !== "undefined" && document.querySelector('.nav-overlay[data-open="true"]')) return;
       // Slower sensitivity (~3x slower than before) for smooth, controlled scrubbing
       const delta = e.deltaY * 0.00014;
       const prev = targetProgressRef.current;
@@ -205,8 +215,11 @@ const JourneySection = ({ active = true }) => {
   useEffect(() => {
     if (!active) return;
     const onKey = (e) => {
+      const tag = e.target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || e.target?.isContentEditable) return;
+      if (typeof document !== "undefined" && document.querySelector('.nav-overlay[data-open="true"]')) return;
       if (["ArrowRight", "ArrowDown"].includes(e.key)) {
-        if (currentProjectIndex < PROJECTS.length - 1) {
+        if (currentProjectIndex < projectCount - 1) {
           goToProject(currentProjectIndex + 1);
         }
       } else if (["ArrowLeft", "ArrowUp"].includes(e.key)) {
@@ -217,7 +230,7 @@ const JourneySection = ({ active = true }) => {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [active, currentProjectIndex, goToProject]);
+  }, [active, currentProjectIndex, goToProject, projectCount]);
 
   const activeProject = PROJECTS[currentProjectIndex] || PROJECTS[0];
 
@@ -227,7 +240,7 @@ const JourneySection = ({ active = true }) => {
       className="blueprint-grid relative h-full w-full overflow-hidden"
     >
       {/* Fullscreen HUD Viewport */}
-      <div className="relative h-full w-full overflow-hidden flex flex-col justify-between p-6 pt-16 md:p-10 md:pt-20 lg:p-12 lg:pt-22 pointer-events-none">
+      <div className="pointer-events-none relative flex h-full w-full flex-col justify-between overflow-hidden p-5 pt-20 sm:p-6 sm:pt-20 md:p-10 md:pt-24 lg:p-12">
         {/* ── 1. Architectural HUD Marginalia (Coordinates, Status, Project ticks) ── */}
         <JourneyMarginalia
           currentStage={currentProjectIndex}
@@ -240,37 +253,35 @@ const JourneySection = ({ active = true }) => {
           <div>
             <div className="flex items-center gap-2">
               <span className="mono text-[10px] tracking-[0.4em] text-[#ff4d00]">
-                SELECTED WORK
+                {liveProfile.journey?.tag || "SELECTED WORK"}
               </span>
               <span className="text-zinc-600">/</span>
               <span className="mono text-[10px] tracking-[0.2em] text-zinc-400">
-                رحلة المشاريع
+                {liveProfile.journey?.arabicTitle || "رحلة المشاريع"}
               </span>
             </div>
             <h2 className="font-display text-3xl uppercase text-white sm:text-4xl md:text-5xl lg:text-6xl">
-              JOURNEY
+              {liveProfile.journey?.title || "JOURNEY"}
             </h2>
           </div>
 
           <div className="hidden max-w-xs text-right font-mono text-[10px] tracking-[0.2em] text-zinc-500 md:block">
-            {profile.work?.note || "Enterprise platforms, SaaS products, storefronts and custom Salla themes."}
+            {liveProfile.work?.note || "Enterprise platforms, SaaS products, storefronts and custom Salla themes."}
           </div>
         </div>
 
-        {/* ── 3. Full-Width Main Arena: Grounded Split with Dynamic Width & Scale Breathing ── */}
-        <div className="relative my-auto flex h-[58vh] md:h-[64vh] w-full items-center justify-center overflow-visible">
-          {/* Media Player Container (Anchored Left, dynamic breathing width) */}
+        {/* ── 3. Main Arena: stacked scroll on mobile, grounded split on md+ ── */}
+        <div data-scroll-region="" className="relative my-4 flex min-h-0 w-full flex-1 flex-col gap-4 overflow-y-auto pr-1 md:my-auto md:h-[64vh] md:flex-none md:flex-row md:items-center md:justify-center md:overflow-visible">
+          {/* Media Player Container */}
           <div
             ref={videoContainerRef}
-            className="pointer-events-auto absolute z-10 flex h-full w-full max-w-lg md:max-w-none md:w-[45vw] items-center justify-center will-change-transform"
+            className="pointer-events-auto z-10 flex h-56 w-full shrink-0 items-center justify-center will-change-transform sm:h-64 md:absolute md:h-full md:w-[45vw] md:max-w-none"
           >
             <JourneyVideoPlayer
-              src="/journey.mp4"
-              poster={activeProject.image || "/work/kader.webp"}
+              poster={activeProject.image || liveProfile.journey?.video?.poster || "/work/kader.webp"}
               progress={progress}
               currentStage={currentProjectIndex}
               stages={PROJECTS}
-              active={active}
               frameCount={41}
               framesPath="/frames/frame_"
               framesExt="jpg"
@@ -278,10 +289,10 @@ const JourneySection = ({ active = true }) => {
             />
           </div>
 
-          {/* Project Details Card Container (Anchored Right, dynamic expanding width & top slide-in) */}
+          {/* Project Details Card Container */}
           <div
             ref={textContainerRef}
-            className="pointer-events-auto absolute z-20 flex w-full max-w-lg md:max-w-none md:w-[46vw] items-center justify-center will-change-transform"
+            className="pointer-events-auto z-20 flex w-full shrink-0 items-center justify-center will-change-transform md:absolute md:w-[46vw] md:max-w-none"
           >
             <div
               ref={cardInnerRef}
@@ -291,12 +302,31 @@ const JourneySection = ({ active = true }) => {
                 stage={activeProject}
                 isActive={true}
               />
+              {/* Mobile prev/next — desktop uses wheel scrub */}
+              <div className="mt-4 flex gap-2 md:hidden">
+                <button
+                  type="button"
+                  disabled={currentProjectIndex === 0}
+                  onClick={() => goToProject(currentProjectIndex - 1)}
+                  className="mono flex-1 rounded-full border border-white/15 px-4 py-2.5 text-[10px] tracking-[0.25em] text-zinc-300 disabled:opacity-30"
+                >
+                  ← PREV
+                </button>
+                <button
+                  type="button"
+                  disabled={currentProjectIndex >= PROJECTS.length - 1}
+                  onClick={() => goToProject(currentProjectIndex + 1)}
+                  className="mono flex-1 rounded-full bg-[#ff4d00] px-4 py-2.5 text-[10px] tracking-[0.25em] text-black disabled:opacity-30"
+                >
+                  NEXT →
+                </button>
+              </div>
             </div>
           </div>
         </div>
 
         {/* ── 4. Bottom Guidance ── */}
-        <div className="pointer-events-auto flex items-center justify-end pt-2">
+        <div className="pointer-events-auto hidden items-center justify-end pt-2 md:flex">
           <div className="flex items-center gap-3 font-mono text-[10px] tracking-[0.25em] text-zinc-500">
             <span className="hidden sm:inline">
               SCROLL MOUSE WHEEL TO SCRUB PROJECTS

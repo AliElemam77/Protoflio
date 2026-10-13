@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ExperienceContext } from "./experienceContext";
-import { profile } from "../data/profile";
+import { profile as fallbackProfile } from "../data/profile";
+import { usePortfolio } from "./PortfolioContext";
 
-const SECTIONS = profile.sections;
 const LOCK_MS = 1000; // matches the section cross-fade duration
 const WHEEL_THRESHOLD = 40;
 const SWIPE_THRESHOLD = 60;
@@ -29,6 +29,8 @@ const consumedByScrollRegion = (target, delta) => {
 };
 
 export default function ExperienceProvider({ children }) {
+  const portfolio = usePortfolio();
+  const SECTIONS = portfolio?.data?.sections?.length ? portfolio.data.sections : fallbackProfile.sections;
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -38,8 +40,10 @@ export default function ExperienceProvider({ children }) {
   const wheelAcc = useRef(0);
   const touchStart = useRef(null);
 
+  const sectionCount = SECTIONS.length;
+
   const go = useCallback((index) => {
-    const next = Math.max(0, Math.min(SECTIONS.length - 1, index));
+    const next = Math.max(0, Math.min(sectionCount - 1, index));
     setCurrent((prev) => {
       if (prev === next) return prev;
       setDirection(next > prev ? 1 : -1);
@@ -47,28 +51,28 @@ export default function ExperienceProvider({ children }) {
       wheelAcc.current = 0;
       return next;
     });
-  }, []);
+  }, [sectionCount]);
 
   const goTo = useCallback(
     (id) => {
       const index = SECTIONS.findIndex((s) => s.id === id);
       if (index >= 0) go(index);
     },
-    [go]
+    [go, SECTIONS]
   );
 
   const step = useCallback(
     (offset) => {
       setCurrent((prev) => {
         const next = prev + offset;
-        if (next < 0 || next > SECTIONS.length - 1) return prev;
+        if (next < 0 || next > sectionCount - 1) return prev;
         setDirection(offset);
         lockedUntil.current = performance.now() + LOCK_MS;
         wheelAcc.current = 0;
         return next;
       });
     },
-    []
+    [sectionCount]
   );
 
   // Wheel / keyboard / touch navigation between fixed sections.
@@ -88,6 +92,16 @@ export default function ExperienceProvider({ children }) {
     };
 
     const onKey = (e) => {
+      const tag = e.target?.tagName;
+      const typing =
+        tag === "INPUT" ||
+        tag === "TEXTAREA" ||
+        tag === "SELECT" ||
+        e.target?.isContentEditable;
+      if (typing) {
+        if (e.key === "Escape") e.target?.blur();
+        return;
+      }
       if (e.key === "Escape") {
         setMenuOpen(false);
         return;
@@ -102,7 +116,7 @@ export default function ExperienceProvider({ children }) {
       } else if (e.key === "Home") {
         go(0);
       } else if (e.key === "End") {
-        go(SECTIONS.length - 1);
+        go(sectionCount - 1);
       }
     };
 
@@ -132,7 +146,7 @@ export default function ExperienceProvider({ children }) {
       window.removeEventListener("touchstart", onTouchStart);
       window.removeEventListener("touchend", onTouchEnd);
     };
-  }, [go, menuOpen, ready, step]);
+  }, [go, menuOpen, ready, step, sectionCount]);
 
   const value = useMemo(
     () => ({
@@ -147,7 +161,7 @@ export default function ExperienceProvider({ children }) {
       ready,
       setReady,
     }),
-    [current, direction, go, goTo, menuOpen, ready, step]
+    [current, direction, go, goTo, menuOpen, ready, step, SECTIONS]
   );
 
   return (

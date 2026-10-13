@@ -1,7 +1,6 @@
-import { profile } from "../../../data/profile";
+import { useProfileData } from "../../../context/PortfolioContext";
+import { profile as fallbackProfile } from "../../../data/profile";
 import { ArrowUpRight } from "../../commen/Icons";
-
-const { work, projects } = profile;
 
 const CardLink = ({ href, children }) => (
   <a
@@ -19,7 +18,7 @@ const ProjectCard = ({ project, index }) => (
   <article
     className="work-card group relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-white/10 md:aspect-video"
     style={{
-      background: `linear-gradient(145deg, ${project.tint[0]}cc 0%, ${project.tint[1]}88 45%, #0a0a0a 100%)`,
+      background: `linear-gradient(145deg, ${(project.tint?.[0] || "#ff4d00")}cc 0%, ${(project.tint?.[1] || "#3a1200")}88 45%, #0a0a0a 100%)`,
     }}
   >
     {/* screenshot — greyscale at rest, full colour once the card is focused */}
@@ -89,7 +88,11 @@ const ProjectCard = ({ project, index }) => (
   </article>
 );
 
-const WorkGrid = () => (
+const WorkGrid = () => {
+  const { data } = useProfileData();
+  const p = data || fallbackProfile;
+  const { work, projects } = p;
+  return (
   <div className="section-content w-full px-8 pb-20 pt-24 md:px-24 md:pb-24 md:pt-32">
     <div className="mb-5 flex shrink-0 flex-col gap-3 md:flex-row md:items-end md:justify-between">
       <div>
@@ -118,12 +121,13 @@ const WorkGrid = () => (
       className="mask-y min-h-0 flex-1 overflow-y-auto pr-1"
     >
       <div className="grid grid-cols-1 gap-5 pb-2 md:grid-cols-2 md:gap-6">
-        {projects.map((project, i) => (
+        {(projects || []).map((project, i) => (
           <ProjectCard key={project.id} project={project} index={i} />
         ))}
       </div>
     </div>
   </div>
 );
+};
 
 export default WorkGrid;

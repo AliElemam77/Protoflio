@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
+import { useProfileData } from "../../context/PortfolioContext";
 
 const INTERACTIVE =
   'a, button, [role="button"], input, textarea, select, summary, [data-cursor="hover"]';
@@ -11,8 +12,11 @@ const INTERACTIVE =
  */
 const CustomCursor = () => {
   const dotRef = useRef(null);
+  const { fx } = useProfileData();
+  const trailEnabled = fx?.cursorTrail !== false;
 
   useEffect(() => {
+    if (!trailEnabled) return undefined;
     const fine = window.matchMedia("(pointer: fine)").matches;
     if (!fine) return undefined;
 
@@ -82,8 +86,9 @@ const CustomCursor = () => {
       window.removeEventListener("mousedown", onDown);
       window.removeEventListener("mouseup", onUp);
     };
-  }, []);
+  }, [trailEnabled]);
 
+  if (!trailEnabled) return null;
   return <div ref={dotRef} className="cursor-dot" aria-hidden="true" />;
 };
 
